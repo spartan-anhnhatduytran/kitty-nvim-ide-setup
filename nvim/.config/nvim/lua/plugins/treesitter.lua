@@ -7,6 +7,12 @@ return {
 		-- Register wgsl file type
 		vim.filetype.add({ extension = { wgsl = "wgsl", wesl = "wesl" } })
 
+		-- Arduino sketches: own filetype (not cpp, so clangd does not also
+		-- attach), but reuse the cpp tree-sitter parser for highlighting since
+		-- no "arduino" parser exists. LSP handled in after/ftplugin/arduino.lua.
+		vim.filetype.add({ extension = { ino = "arduino", pde = "arduino" } })
+		vim.treesitter.language.register("cpp", "arduino")
+
 		-- Configure wgsl parser
 		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 		parser_config.wgsl = {
@@ -17,7 +23,7 @@ return {
 		}
 
 		require("nvim-treesitter.configs").setup({
-			ensure_installed = { "wgsl" },
+			ensure_installed = { "wgsl", "kotlin", "java", "cpp" },
 			sync_install = false,
 			auto_install = false,  -- CRITICAL - prevents auto-compilation conflicts
 			ignore_install = { "tsx", "typescript", "javascript", "vimdoc" },

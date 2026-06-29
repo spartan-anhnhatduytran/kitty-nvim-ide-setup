@@ -77,7 +77,11 @@ return {
 			-- Helper: compute root
 			local function get_root(buf)
 				local bufname = vim.api.nvim_buf_get_name(buf)
-				local patterns = { ".git", "pom.xml", "build.gradle", "build.gradle.kts", "mvnw", "gradlew" }
+				-- Root-exclusive markers only: settings.gradle*/wrappers live at the
+				-- gradle ROOT, not in every module. Per-module build.gradle(.kts)/pom.xml
+				-- would make vim.fs.root stop at a submodule and break cross-module/dep
+				-- resolution (kotlin-lsp must import the whole build).
+				local patterns = { "settings.gradle.kts", "settings.gradle", "gradlew", "mvnw", ".git" }
 				return vim.fs.root(bufname, patterns) or vim.uv.cwd()
 			end
 
@@ -127,11 +131,16 @@ return {
 					cmd = { "typescript-language-server", "--stdio" },
 					filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 				},
-			-- kotlin_language_server has issues with Java 25, use kotlin-lsp instead
-			kotlin_language_server = {
-				cmd = { "kotlin-lsp" },
+				wgsl_analyzer = {
+					cmd = { "wgsl-analyzer" },
+					filetypes = { "wgsl" },
+				},
+			-- JetBrains kotlin-lsp (supports goto-implementation, unlike fwcd)
+			-- Install: brew install --cask kotlin-lsp, then clear quarantine
+			kotlin_language_server = vim.fn.executable("kotlin-lsp") == 1 and {
+				cmd = { "kotlin-lsp", "--stdio" },
 				filetypes = { "kotlin" },
-			},
+			} or nil,
 			-- jdtls is handled in ftplugin/java.lua
 		}
 

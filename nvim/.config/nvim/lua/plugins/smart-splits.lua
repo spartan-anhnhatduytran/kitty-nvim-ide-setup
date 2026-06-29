@@ -21,5 +21,11 @@ return {
 		vim.keymap.set("n", "<A-j>", ss.resize_down, { desc = "Resize down" })
 		vim.keymap.set("n", "<A-k>", ss.resize_up, { desc = "Resize up" })
 		vim.keymap.set("n", "<A-l>", ss.resize_right, { desc = "Resize right" })
+
+		-- Resize splits (Kitty passes ctrl+cmd+arrow through when IS_NVIM is set)
+		vim.keymap.set("n", "<C-D-Left>", ss.resize_left, { desc = "Resize left" })
+		vim.keymap.set("n", "<C-D-Right>", ss.resize_right, { desc = "Resize right" })
+		vim.keymap.set("n", "<C-D-Up>", ss.resize_up, { desc = "Resize up" })
+		vim.keymap.set("n", "<C-D-Down>", ss.resize_down, { desc = "Resize down" })
 	end,
 }

@@ -1,5 +1,9 @@
 return {
 	"seblyng/roslyn.nvim",
+	-- Pinned: dbd677f (feat!: >=0.12) drops Neovim 0.11 support. We run 0.11.4
+	-- because nvim-treesitter master is incompatible with 0.12. f2ec6ee is the
+	-- last 0.11-compatible commit. Unpin once treesitter supports 0.12.
+	commit = "f2ec6ee6384c3b611ddc817b9e78b20cd0334bbb",
 	enabled = true,
 	ft = "cs",
 	config = function()

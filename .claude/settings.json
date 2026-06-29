@@ -1,24 +1,55 @@
 {
-    "hooks": {
-        "Stop": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "afplay /Users/thongnguyen/Something/pingsound/ping.mp3"
-                    }
-                ]
-            }
-        ],
-        "Notification": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "afplay /Users/thongnguyen/Something/pingsound/ping.mp3"
-                    }
-                ]
-            }
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "claude-opus-4-8",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Ping.aiff"
+          }
         ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Ping.aiff"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "figma@claude-plugins-official": true,
+    "kotlin-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
     }
+  },
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true
 }

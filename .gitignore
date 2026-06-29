@@ -106,3 +106,30 @@ id_rsa.pub
 .fish_sessions
 
 *.jsonc
+
+# Claude Code - runtime state & caches (ignore all, then un-ignore config to push)
+.claude/*
+!.claude/settings.json
+!.claude/CLAUDE.md
+!.claude/RTK.md
+!.claude/commands/
+# machine-local / runtime junk explicitly kept out
+.claude/settings.local.json
+.claude/settings.json.bak
+.claude/history.jsonl
+.claude/mcp-needs-auth-cache.json
+.claude/.caveman-active
+.claude/.last-cleanup
+.claude/backups/
+.claude/cache/
+.claude/file-history/
+.claude/paste-cache/
+.claude/plans/
+.claude/plugins/
+.claude/projects/
+.claude/session-env/
+.claude/sessions/
+.claude/shell-snapshots/
+.claude/skills/
+.claude/tasks/
+.claude/telemetry/
