@@ -6,6 +6,28 @@ return {
 		local telescope = require("telescope")
 		local action_state = require("telescope.actions.state")
 
+		-- Telescope opens the selected file in whatever window was active when
+		-- the picker was launched. If that's the Neo-tree sidebar, the picked
+		-- file replaces the tree instead of appearing in the code pane. Step
+		-- out to a non-tree window first so the sidebar always survives.
+		local function focus_code_window()
+			if vim.bo.filetype ~= "neo-tree" then
+				return
+			end
+			for _, win in ipairs(vim.api.nvim_list_wins()) do
+				local buf = vim.api.nvim_win_get_buf(win)
+				if vim.bo[buf].filetype ~= "neo-tree" then
+					vim.api.nvim_set_current_win(win)
+					return
+				end
+			end
+			-- No code window exists yet (tree is the only window, e.g. right
+			-- after startup) - open one instead of letting the file land in
+			-- the tree's own window, which makes Neo-tree defensively re-open
+			-- itself in a second split ("duplicated folder").
+			vim.cmd("vsplit")
+		end
+
 		-- Jump cursor into the preview window to navigate with normal motions.
 		-- <C-h> again (now buffer-local in the preview) returns to the prompt.
 		local function focus_preview(prompt_bufnr)
@@ -68,17 +90,17 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>ff", ":Telescope find_files<CR>", {
-			desc = "Find files",
-			silent = true,
-		})
-		 vim.keymap.set("n", "<leader>fw", ":Telescope live_grep<CR>", {
-            desc = "Live grep current word",
-            silent = true
-        })
-		vim.keymap.set("n", "<leader><leader>", ":Telescope oldfiles<CR>", {
-			desc = "Recent files",
-			silent = true,
-		})
+		vim.keymap.set("n", "<leader>ff", function()
+			focus_code_window()
+			require("telescope.builtin").find_files()
+		end, { desc = "Find files", silent = true })
+		vim.keymap.set("n", "<leader>fw", function()
+			focus_code_window()
+			require("telescope.builtin").live_grep()
+		end, { desc = "Live grep current word", silent = true })
+		vim.keymap.set("n", "<leader><leader>", function()
+			focus_code_window()
+			require("telescope.builtin").oldfiles()
+		end, { desc = "Recent files", silent = true })
 	end,
 }

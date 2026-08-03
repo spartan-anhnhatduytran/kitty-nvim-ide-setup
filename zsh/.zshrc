@@ -34,3 +34,6 @@ export FLYWAY_DIR=/opt/homebrew/opt/flyway/libexec
 alias pio="$HOME/.platformio/penv/bin/pio"
 alias lich="curl lich.day"
 alias lichthang="curl lich.day/\$(date +%Y%m)"
+
+# Kitty IDE mode: open new kitty window with nvim + terminal at current dir
+alias ide='kitty --session ~/.config/kitty/ide.session --directory "$(pwd)" --detach'

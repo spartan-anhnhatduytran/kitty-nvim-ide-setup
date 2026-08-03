@@ -24,6 +24,13 @@ return {
 			window = {
 				width = 50,
 				position = "left",
+				-- Neo-tree binds bare <space> to toggle_node with nowait=true by
+				-- default, which swallows <space> before it can start a <leader>
+				-- combo (e.g. <leader>ff) while the tree is focused. Free it up;
+				-- <CR>/o still open/toggle nodes.
+				mappings = {
+					["<space>"] = "none",
+				},
 			},
 		})
 

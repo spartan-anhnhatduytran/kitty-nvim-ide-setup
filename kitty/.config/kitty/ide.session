@@ -1,0 +1,8 @@
+# IDE layout: nvim (top ~70%) + terminal (bottom ~30%)
+# Usage: kitty --session ~/.config/kitty/ide.session --directory <project>
+layout splits
+# Run nvim through an interactive login shell so it inherits the full user env
+# (brew, nvm/node, go) — GUI-launched kitty has a bare PATH otherwise
+launch zsh -il -c nvim
+focus
+launch --location=hsplit --bias=30
