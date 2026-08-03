@@ -27,6 +27,30 @@ return {
       vim.cmd("Neotree show")
     end, {})
 
+    -- Auto-open the Diffview side-by-side diff panel on startup whenever
+    -- there are uncommitted changes — the point is reviewing AI-written
+    -- edits without having to remember <leader>gD every time. Skips
+    -- cleanly when not in a git repo or when the tree is clean.
+    -- vim.cmd("DiffviewOpen") is safe to call even before diffview.nvim
+    -- has loaded — lazy.nvim intercepts the `cmd` and loads it first.
+    vim.api.nvim_create_user_command("EnsureGitDiffIfDirty", function()
+      if vim.fn.argc() > 0 then
+        return
+      end
+      vim.system({ "git", "rev-parse", "--is-inside-work-tree" }, { text = true }, function(repo)
+        if repo.code ~= 0 then
+          return
+        end
+        vim.system({ "git", "status", "--porcelain" }, { text = true }, function(status)
+          if status.code == 0 and status.stdout and status.stdout ~= "" then
+            vim.schedule(function()
+              vim.cmd("DiffviewOpen")
+            end)
+          end
+        end)
+      end)
+    end, {})
+
     require("auto-session").setup({
       log_level = "info",
       -- Only restore the session that matches the cwd; restoring the "last"
@@ -38,8 +62,8 @@ return {
       -- Neo-tree windows don't serialize properly in sessions: close before
       -- saving, re-open the sidebar after restore (or when no session exists)
       pre_save_cmds = { "Neotree close" },
-      post_restore_cmds = { "EnsureNeoTree" },
-      no_restore_cmds = { "EnsureNeoTree" },
+      post_restore_cmds = { "EnsureNeoTree", "EnsureGitDiffIfDirty" },
+      no_restore_cmds = { "EnsureNeoTree", "EnsureGitDiffIfDirty" },
     })
   end,
 }
