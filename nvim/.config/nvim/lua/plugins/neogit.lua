@@ -5,4 +5,11 @@ return {
 		"sindrets/diffview.nvim",
 		"nvim-telescope/telescope.nvim",
 	},
+	cmd = "Neogit",
+	keys = {
+		{ "<leader>gn", "<cmd>Neogit<cr>", desc = "Neogit status (staged/unstaged diff)" },
+	},
+	config = function()
+		require("neogit").setup()
+	end,
 }

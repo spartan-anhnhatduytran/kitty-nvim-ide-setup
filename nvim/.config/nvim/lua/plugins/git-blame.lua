@@ -76,6 +76,18 @@ return {
 					buffer = bufnr,
 					desc = "Reset hunk",
 				})
+
+				-- Preview the diff of the hunk under the cursor in a floating window
+				vim.keymap.set("n", "<leader>gh", gs.preview_hunk, {
+					buffer = bufnr,
+					desc = "Preview hunk diff",
+				})
+
+				-- Full-file diff against the index, in a vertical split
+				vim.keymap.set("n", "<leader>gd", gs.diffthis, {
+					buffer = bufnr,
+					desc = "Diff current file",
+				})
 			end,
 		})
 		

@@ -5,4 +5,6 @@ layout splits
 # (brew, nvm/node, go) — GUI-launched kitty has a bare PATH otherwise
 launch zsh -il -c nvim
 focus
-launch --location=hsplit --bias=30
+# --dont-take-focus: without it, launching this pane steals focus back from
+# nvim above, so the first keys typed (e.g. <space>ff) go to the shell instead
+launch --location=hsplit --bias=30 --dont-take-focus

@@ -12,6 +12,7 @@ end
 
 require('configurations.keymaps').setup()
 require('configurations.options').setup()
+require('configurations.cheatsheet').setup()
 
 require("lazy").setup(require("configurations.plugins").setup(), {
     checker = {

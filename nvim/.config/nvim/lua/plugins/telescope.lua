@@ -24,8 +24,11 @@ return {
 			-- No code window exists yet (tree is the only window, e.g. right
 			-- after startup) - open one instead of letting the file land in
 			-- the tree's own window, which makes Neo-tree defensively re-open
-			-- itself in a second split ("duplicated folder").
-			vim.cmd("vsplit")
+			-- itself in a second split ("duplicated folder"). Must be `vnew`,
+			-- not `vsplit`: `:vsplit` clones the CURRENT buffer (still the
+			-- Neo-tree buffer) into the new window, which is the same bug by
+			-- another path. `:vnew` opens a genuinely empty buffer instead.
+			vim.cmd("vnew")
 		end
 
 		-- Jump cursor into the preview window to navigate with normal motions.
