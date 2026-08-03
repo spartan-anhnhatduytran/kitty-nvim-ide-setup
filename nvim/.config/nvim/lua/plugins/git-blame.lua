@@ -33,6 +33,12 @@ return {
 				topdelete = { text = "‾" },
 				changedelete = { text = "~" },
 			},
+
+			-- Color the line NUMBER (not the whole line background — too
+			-- noisy) of every added/changed/deleted line. Always on, no
+			-- keypress needed — useful for reviewing AI-written changes:
+			-- scroll the file and every edit is visible immediately.
+			numhl = true,
 			
 			-- Keymaps for git blame
 			on_attach = function(bufnr)
@@ -89,6 +95,19 @@ return {
 					desc = "Diff current file",
 				})
 			end,
+
+			-- Auto-show the word-level diff (deleted text struck through,
+			-- right above the changed line) whenever the cursor rests on a
+			-- changed hunk for a moment — no keypress needed to see WHAT
+			-- changed, not just THAT it changed.
+			vim.api.nvim_create_autocmd("CursorHold", {
+				callback = function()
+					if vim.bo.buftype ~= "" then
+						return
+					end
+					require("gitsigns").preview_hunk_inline()
+				end,
+			})
 		})
 		
 		-- Custom highlight for blame
