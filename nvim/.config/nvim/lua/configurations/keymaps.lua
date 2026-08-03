@@ -21,6 +21,15 @@ function M.setup()
 	-- Map jk to ESC in insert mode
 	map("i", "jk", "<Esc>")
 
+	-- Inside a :terminal buffer (LazyGit, a shell, etc.), plain <Esc> does
+	-- NOT return to Normal mode by default — it's sent to the program
+	-- running inside instead (many TUIs, including LazyGit itself, use Esc
+	-- for their own navigation). Ctrl+q is a dedicated, always-available
+	-- escape hatch that doesn't collide with anything the program might use.
+	map("t", "<C-q>", [[<C-\><C-n>]], {
+		desc = "Exit terminal-mode to Normal mode",
+	})
+
 	-- Select all text with Ctrl+A
 	map("n", "<C-a>", "ggVG", {
 		desc = "Select all text",
